@@ -1,5 +1,6 @@
 <?php
-$pageTitle = "Manage Rentals - RentEasy";
+$currency = get_system_setting("currency", "BDT");
+$pageTitle = "Manage Rentals";
 require_once __DIR__ . "/../layouts/header.php";
 require_once __DIR__ . "/../layouts/sidebar.php";
 ?>
@@ -45,7 +46,7 @@ require_once __DIR__ . "/../layouts/sidebar.php";
                                 <span class="text-muted"><?php echo htmlspecialchars($rent["plate_number"]); ?></span>
                             </td>
                             <td><?php echo htmlspecialchars($rent["start_date"] . " to " . $rent["end_date"]); ?></td>
-                            <td><strong><?php echo htmlspecialchars(number_format($rent["total_cost"], 2)); ?> BDT</strong></td>
+                            <td><strong><?php echo htmlspecialchars(number_format($rent["total_cost"], 2)); ?> <?php echo htmlspecialchars($currency); ?></strong></td>
                             <td>
                                 <?php
                                 $badgeClass = "badge-pending";
@@ -64,7 +65,7 @@ require_once __DIR__ . "/../layouts/sidebar.php";
                                     <button class="btn btn-success btn-sm" onclick="ajaxApproveRental(<?php echo (int)$rent['id']; ?>)">Approve</button>
                                     <a href="index.php?controller=rentals&action=cancel&id=<?php echo (int)$rent['id']; ?>" class="btn btn-danger btn-sm" onclick="return confirm('Cancel request?')">Reject</a>
                                 <?php } elseif ($rent["status"] === "rented" || $rent["status"] === "approved") { ?>
-                                    <button class="btn btn-primary btn-sm" onclick="ajaxReturnRental(<?php echo (int)$rent['id']; ?>)">Process Return</button>
+                                    <button class="btn btn-primary btn-sm" onclick="ajaxReturnRental('<?php echo (int)$rent['id']; ?>')">Process Return</button>
                                 <?php } else { ?>
                                     <span class="text-muted">Completed</span>
                                 <?php } ?>
@@ -102,7 +103,7 @@ require_once __DIR__ . "/../layouts/sidebar.php";
                     <option value="">-- Choose Vehicle --</option>
                     <?php foreach ($availableVehicles as $veh) { ?>
                         <option value="<?php echo (int)$veh['id']; ?>" data-rate="<?php echo (float)$veh['daily_rate']; ?>">
-                            <?php echo htmlspecialchars($veh["brand"] . " " . $veh["model"] . " - " . number_format($veh["daily_rate"], 2) . " BDT/day"); ?>
+                            <?php echo htmlspecialchars($veh["brand"] . " " . $veh["model"] . " - " . number_format($veh["daily_rate"], 2) . " " . $currency . "/day"); ?>
                         </option>
                     <?php } ?>
                 </select>

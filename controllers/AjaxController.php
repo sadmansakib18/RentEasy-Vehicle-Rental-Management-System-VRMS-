@@ -2,6 +2,7 @@
 require_once __DIR__ . "/../models/UserModel.php";
 require_once __DIR__ . "/../models/VehicleModel.php";
 require_once __DIR__ . "/../models/RentalModel.php";
+require_once __DIR__ . "/../models/SettingModel.php";
 
 class AjaxController {
     private $userModel;
@@ -63,12 +64,13 @@ class AjaxController {
         $rate = (float)$vehicle["daily_rate"];
         $totalCost = $days * $rate;
 
+        $currency = get_system_setting("currency", "BDT");
         echo json_encode([
             "success" => true,
             "days" => $days,
             "daily_rate" => $rate,
             "total_cost" => $totalCost,
-            "formatted_cost" => number_format($totalCost, 2) . " BDT"
+            "formatted_cost" => number_format($totalCost, 2) . " " . $currency
         ]);
         exit;
     }

@@ -1,5 +1,7 @@
 <?php
-$pageTitle = "Dashboard - RentEasy";
+$systemName = get_system_setting("system_name", "RentEasy VRMS");
+$currency = get_system_setting("currency", "BDT");
+$pageTitle = "Dashboard";
 require_once __DIR__ . "/../layouts/header.php";
 require_once __DIR__ . "/../layouts/sidebar.php";
 ?>
@@ -7,7 +9,7 @@ require_once __DIR__ . "/../layouts/sidebar.php";
 <div class="main-content">
     <div class="page-title-row">
         <div>
-            <h2 class="page-title-text">RentEasy Dashboard</h2>
+            <h2 class="page-title-text"><?php echo htmlspecialchars($systemName); ?> Dashboard</h2>
             <div class="page-subtitle-text">
                 Welcome, <strong><?php echo htmlspecialchars($_SESSION["user_name"] ?? "User"); ?></strong> (Role: <?php echo htmlspecialchars(ucfirst(str_replace("_", " ", $_SESSION["user_role"] ?? "guest"))); ?>)
             </div>
@@ -16,7 +18,7 @@ require_once __DIR__ . "/../layouts/sidebar.php";
             <?php if (($userRole ?? "") === "customer") { ?>
                 <a href="index.php?controller=browse&action=index" class="btn btn-primary">Book Car</a>
             <?php } else { ?>
-                <a href="index.php?controller=vehicles&action=index" class="btn btn-primary">Add Vehicle</a>
+                <a href="index.php?controller=vehicles&action=add" class="btn btn-primary">Add Vehicle</a>
             <?php } ?>
         </div>
     </div>
@@ -40,7 +42,7 @@ require_once __DIR__ . "/../layouts/sidebar.php";
             </div>
             <div class="card">
                 <h3>Total Spent</h3>
-                <h1 class="card-stat-val-success"><?php echo number_format($myTotalSpent, 2); ?> ৳</h1>
+                <h1 class="card-stat-val-success"><?php echo number_format($myTotalSpent, 2); ?> <?php echo htmlspecialchars($currency); ?></h1>
                 <p class="card-stat-desc">Paid for rental services</p>
             </div>
         <?php } elseif ($userRole === "staff") { ?>
@@ -82,7 +84,7 @@ require_once __DIR__ . "/../layouts/sidebar.php";
             </div>
             <div class="card">
                 <h3>Total Revenue</h3>
-                <h1 class="card-stat-val-success"><?php echo number_format($totalRevenue, 2); ?> ৳</h1>
+                <h1 class="card-stat-val-success"><?php echo number_format($totalRevenue, 2); ?> <?php echo htmlspecialchars($currency); ?></h1>
                 <p class="card-stat-desc">Total earnings logged</p>
             </div>
         <?php } ?>
@@ -115,7 +117,7 @@ require_once __DIR__ . "/../layouts/sidebar.php";
                             <?php } ?>
                             <td><?php echo htmlspecialchars($rent["brand"] . " " . $rent["model"] . " (" . $rent["plate_number"] . ")"); ?></td>
                             <td><?php echo htmlspecialchars($rent["start_date"] . " to " . $rent["end_date"]); ?></td>
-                            <td><?php echo htmlspecialchars(number_format($rent["total_cost"], 2)); ?> BDT</td>
+                            <td><?php echo htmlspecialchars(number_format($rent["total_cost"], 2)); ?> <?php echo htmlspecialchars($currency); ?></td>
                             <td>
                                 <?php
                                 $badgeClass = "badge-pending";

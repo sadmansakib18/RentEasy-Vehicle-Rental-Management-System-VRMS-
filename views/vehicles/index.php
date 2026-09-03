@@ -1,5 +1,6 @@
 <?php
-$pageTitle = "Manage Vehicles - RentEasy";
+$currency = get_system_setting("currency", "BDT");
+$pageTitle = "Manage Vehicles";
 require_once __DIR__ . "/../layouts/header.php";
 require_once __DIR__ . "/../layouts/sidebar.php";
 ?>
@@ -20,7 +21,7 @@ require_once __DIR__ . "/../layouts/sidebar.php";
                 <p>Plate: <strong><?php echo htmlspecialchars($veh["plate_number"]); ?></strong></p>
                 <p>Type: <?php echo htmlspecialchars($veh["type"]); ?></p>
                 <p>Year: <?php echo htmlspecialchars($veh["year"]); ?></p>
-                <p>Rate: <?php echo htmlspecialchars(number_format($veh["daily_rate"], 2)); ?> BDT/day</p>
+                <p>Rate: <?php echo htmlspecialchars(number_format($veh["daily_rate"], 2)); ?> <?php echo htmlspecialchars($currency); ?>/day</p>
                 <p>
                     <span class="badge <?php echo ($veh['status'] === 'available') ? 'badge-available' : (($veh['status'] === 'rented') ? 'badge-rented' : 'badge-maintenance'); ?>" id="status-badge-<?php echo (int)$veh['id']; ?>">
                         <?php echo htmlspecialchars(ucfirst($veh["status"])); ?>

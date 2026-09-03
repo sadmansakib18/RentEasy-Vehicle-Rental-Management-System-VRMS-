@@ -1,5 +1,6 @@
 <?php
-$pageTitle = "Edit Vehicle - RentEasy";
+$currency = get_system_setting("currency", "BDT");
+$pageTitle = "Edit Vehicle";
 require_once __DIR__ . "/../layouts/header.php";
 require_once __DIR__ . "/../layouts/sidebar.php";
 ?>
@@ -47,7 +48,7 @@ require_once __DIR__ . "/../layouts/sidebar.php";
             </div>
 
             <div class="form-group">
-                <label for="veh_rate">Daily Rental Rate (BDT)</label>
+                <label for="veh_rate">Daily Rental Rate (<?php echo htmlspecialchars($currency); ?>)</label>
                 <input type="number" step="0.01" name="daily_rate" id="veh_rate" class="form-control" value="<?php echo (float)$vehicle['daily_rate']; ?>" required>
             </div>
 

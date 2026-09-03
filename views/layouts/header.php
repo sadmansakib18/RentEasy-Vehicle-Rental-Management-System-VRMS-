@@ -2,7 +2,10 @@
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
-$pageTitle = $pageTitle ?? "RentEasy - Vehicle Rental Management System";
+require_once __DIR__ . "/../../models/SettingModel.php";
+
+$systemName = get_system_setting("system_name", "RentEasy VRMS");
+$pageTitle = isset($pageTitle) ? ($pageTitle . " - " . $systemName) : $systemName;
 ?>
 <!DOCTYPE html>
 <html>

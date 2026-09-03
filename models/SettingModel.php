@@ -11,8 +11,10 @@ class SettingModel {
     public function getAll() {
         $res = $this->db->query("SELECT setting_key, setting_value FROM system_settings");
         $data = [];
-        while ($row = $res->fetch_assoc()) {
-            $data[$row["setting_key"]] = $row["setting_value"];
+        if ($res) {
+            while ($row = $res->fetch_assoc()) {
+                $data[$row["setting_key"]] = $row["setting_value"];
+            }
         }
         return $data;
     }
@@ -40,5 +42,14 @@ class SettingModel {
         }
         return true;
     }
+}
+
+function get_system_setting($key, $default = "") {
+    static $cachedSettings = null;
+    if ($cachedSettings === null) {
+        $model = new SettingModel();
+        $cachedSettings = $model->getAll();
+    }
+    return $cachedSettings[$key] ?? $default;
 }
 ?>

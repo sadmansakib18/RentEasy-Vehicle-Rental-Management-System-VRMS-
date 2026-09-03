@@ -1,5 +1,6 @@
 <?php
-$pageTitle = "My Bookings - RentEasy";
+$currency = get_system_setting("currency", "BDT");
+$pageTitle = "My Bookings";
 require_once __DIR__ . "/../layouts/header.php";
 require_once __DIR__ . "/../layouts/sidebar.php";
 ?>
@@ -39,7 +40,7 @@ require_once __DIR__ . "/../layouts/sidebar.php";
                             <td><strong><?php echo htmlspecialchars($rent["brand"] . " " . $rent["model"]); ?></strong> (<?php echo htmlspecialchars($rent["plate_number"]); ?>)</td>
                             <td><?php echo htmlspecialchars($rent["start_date"]); ?></td>
                             <td><?php echo htmlspecialchars($rent["end_date"]); ?></td>
-                            <td><strong><?php echo htmlspecialchars(number_format($rent["total_cost"], 2)); ?> BDT</strong></td>
+                            <td><strong><?php echo htmlspecialchars(number_format($rent["total_cost"], 2)); ?> <?php echo htmlspecialchars($currency); ?></strong></td>
                             <td>
                                 <?php
                                 $badgeClass = "badge-pending";

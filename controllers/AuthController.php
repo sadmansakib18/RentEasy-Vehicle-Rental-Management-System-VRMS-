@@ -1,5 +1,6 @@
 <?php
 require_once __DIR__ . "/../models/UserModel.php";
+require_once __DIR__ . "/../models/SettingModel.php";
 
 class AuthController {
     private $userModel;
@@ -75,6 +76,11 @@ class AuthController {
         $address = "";
 
         if ($_SERVER["REQUEST_METHOD"] === "POST") {
+            if (get_system_setting("allow_registration", "1") === "0") {
+                $general_error = "Public registration is currently disabled by administrator.";
+                require __DIR__ . "/../views/auth/register.php";
+                return;
+            }
             $name = trim($_POST["name"] ?? "");
             $email = trim($_POST["email"] ?? "");
             $phone = trim($_POST["phone"] ?? "");

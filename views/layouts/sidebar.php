@@ -1,9 +1,11 @@
 <?php
 $currentRole = $_SESSION["user_role"] ?? "guest";
 $currentAction = $_GET["controller"] ?? "dashboard";
+$brandName = get_system_setting("system_name", "RentEasy");
+$allowRegistration = get_system_setting("allow_registration", "1") === "1";
 ?>
 <div class="sidebar">
-    <div class="sidebar-brand">RentEasy</div>
+    <div class="sidebar-brand"><?php echo htmlspecialchars($brandName); ?></div>
     
     <div>
         <a href="index.php?controller=dashboard&action=index" class="<?php echo ($currentAction === 'dashboard') ? 'active' : ''; ?>">Dashboard</a>
@@ -35,7 +37,9 @@ $currentAction = $_GET["controller"] ?? "dashboard";
             <a href="index.php?controller=auth&action=logout" class="sidebar-logout">Log Out</a>
         <?php } else { ?>
             <a href="index.php?controller=auth&action=login">Sign In</a>
-            <a href="index.php?controller=auth&action=register">Register</a>
+            <?php if ($allowRegistration) { ?>
+                <a href="index.php?controller=auth&action=register">Register</a>
+            <?php } ?>
         <?php } ?>
     </div>
 </div>

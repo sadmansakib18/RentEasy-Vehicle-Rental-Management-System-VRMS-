@@ -1,11 +1,14 @@
 <?php
-$pageTitle = "Login - RentEasy";
+$pageTitle = "Login";
 require_once __DIR__ . "/../layouts/header.php";
+
+$systemName = get_system_setting("system_name", "RentEasy");
+$allowRegistration = get_system_setting("allow_registration", "1") === "1";
 ?>
 <div class="auth-body" style="min-height: 100vh; display: flex; align-items: center; justify-content: center;">
     <div class="auth-container">
         <div class="auth-header">
-            <h2>RentEasy Sign In</h2>
+            <h2><?php echo htmlspecialchars($systemName); ?> Sign In</h2>
             <p class="auth-subheader">Enter credentials to access your account</p>
         </div>
 
@@ -49,7 +52,10 @@ require_once __DIR__ . "/../layouts/header.php";
         </form>
 
         <div class="auth-footer">
-            New Customer? <a href="index.php?controller=auth&action=register">Create Account</a> | <a href="index.php?controller=home">Home</a>
+            <?php if ($allowRegistration) { ?>
+                New Customer? <a href="index.php?controller=auth&action=register">Create Account</a> | 
+            <?php } ?>
+            <a href="index.php?controller=home">Home</a>
         </div>
     </div>
 </div>

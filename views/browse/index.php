@@ -1,5 +1,6 @@
 <?php
-$pageTitle = "Browse Fleet - RentEasy";
+$currency = get_system_setting("currency", "BDT");
+$pageTitle = "Browse Fleet";
 require_once __DIR__ . "/../layouts/header.php";
 require_once __DIR__ . "/../layouts/sidebar.php";
 ?>
@@ -31,12 +32,12 @@ require_once __DIR__ . "/../layouts/sidebar.php";
         <?php } else { ?>
             <?php foreach ($vehicles as $veh) { ?>
                 <div class="card vehicle-item-card" data-category="<?php echo htmlspecialchars($veh['type']); ?>" data-text="<?php echo htmlspecialchars(strtolower($veh['brand'] . ' ' . $veh['model'] . ' ' . $veh['plate_number'])); ?>">
-                    <img src="<?php echo htmlspecialchars($veh['image_path'] ?? 'assets/images/r15.webp'); ?>" class="card-img" alt="Vehicle">
+                    <img src="<?php echo htmlspecialchars($veh['image_path'] ?? 'uploads/premio.jpg'); ?>" class="card-img" alt="Vehicle">
                     <h3><?php echo htmlspecialchars($veh["brand"] . " " . $veh["model"]); ?></h3>
                     <p>Category: <?php echo htmlspecialchars($veh["type"]); ?></p>
                     <p>Year: <?php echo htmlspecialchars($veh["year"]); ?></p>
                     <p>Plate: <?php echo htmlspecialchars($veh["plate_number"]); ?></p>
-                    <p>Rate: <strong><?php echo htmlspecialchars(number_format($veh["daily_rate"], 2)); ?> BDT/day</strong></p>
+                    <p>Rate: <strong><?php echo htmlspecialchars(number_format($veh["daily_rate"], 2)); ?> <?php echo htmlspecialchars($currency); ?>/day</strong></p>
                     <p>
                         <?php if ($veh["status"] === "available") { ?>
                             <span class="badge badge-available">Available</span>
@@ -75,7 +76,7 @@ require_once __DIR__ . "/../layouts/sidebar.php";
                 <h3 id="modal_veh_title">Toyota Premio</h3>
                 <div class="modal-summary-item">
                     <span>Daily Price:</span>
-                    <strong id="daily_rate_val" data-rate="3500">3,500 BDT</strong>
+                    <strong id="daily_rate_val" data-rate="3500">3,500 <?php echo htmlspecialchars($currency); ?></strong>
                 </div>
             </div>
 
@@ -96,7 +97,7 @@ require_once __DIR__ . "/../layouts/sidebar.php";
                 </div>
                 <div class="modal-summary-item">
                     <span>Total Cost:</span>
-                    <strong id="total_cost_val">3,500 BDT</strong>
+                    <strong id="total_cost_val">3,500 <?php echo htmlspecialchars($currency); ?></strong>
                 </div>
             </div>
 
