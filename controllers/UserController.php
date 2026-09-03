@@ -26,6 +26,12 @@ class UserController {
     }
 
     public function create() {
+        $myRole = $_SESSION["user_role"] ?? "";
+        if ($myRole !== "super_admin" && $myRole !== "admin") {
+            header("Location: index.php?controller=users&action=index");
+            exit;
+        }
+
         if ($_SERVER["REQUEST_METHOD"] === "POST") {
             $name = trim($_POST["name"] ?? "");
             $email = trim($_POST["email"] ?? "");
@@ -33,6 +39,10 @@ class UserController {
             $address = trim($_POST["address"] ?? "");
             $role = trim($_POST["role"] ?? "staff");
             $password = $_POST["password"] ?? "";
+
+            if ($myRole === "admin" && $role !== "staff") {
+                $role = "staff";
+            }
 
             if (!empty($name) && !empty($email) && !empty($password) && !$this->userModel->emailExists($email)) {
                 $this->userModel->create($name, $email, $password, $phone, $address, $role);
@@ -45,9 +55,23 @@ class UserController {
     public function toggleStatus() {
         $id = (int)($_GET["id"] ?? 0);
         $user = $this->userModel->findById($id);
-        if ($user) {
-            $newStatus = ($user["status"] === "active") ? "inactive" : "active";
-            $this->userModel->updateStatus($id, $newStatus);
+        $myRole = $_SESSION["user_role"] ?? "";
+        $myId = $_SESSION["user_id"] ?? 0;
+
+        if ($user && $id != $myId) {
+            $canManage = false;
+            if ($myRole === "super_admin" && $user["role"] !== "super_admin") {
+                $canManage = true;
+            } elseif ($myRole === "admin" && in_array($user["role"], ["staff", "customer"])) {
+                $canManage = true;
+            } elseif ($myRole === "staff" && $user["role"] === "customer") {
+                $canManage = true;
+            }
+
+            if ($canManage) {
+                $newStatus = ($user["status"] === "active") ? "inactive" : "active";
+                $this->userModel->updateStatus($id, $newStatus);
+            }
         }
         header("Location: index.php?controller=users&action=index");
         exit;
@@ -55,7 +79,10 @@ class UserController {
 
     public function delete() {
         $id = (int)($_GET["id"] ?? 0);
-        if ($id > 0 && $id != $_SESSION["user_id"]) {
+        $myRole = $_SESSION["user_role"] ?? "";
+        $myId = $_SESSION["user_id"] ?? 0;
+
+        if ($id > 0 && $id != $myId && $myRole === "super_admin") {
             $this->userModel->delete($id);
         }
         header("Location: index.php?controller=users&action=index");
