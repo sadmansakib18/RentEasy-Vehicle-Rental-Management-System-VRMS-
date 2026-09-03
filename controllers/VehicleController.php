@@ -34,19 +34,41 @@ class VehicleController {
             $year = (int)($_POST["year"] ?? date("Y"));
             $rate = (float)($_POST["daily_rate"] ?? 0);
             $status = trim($_POST["status"] ?? "available");
-            $image = !empty($_POST["image_path"]) ? trim($_POST["image_path"]) : "uploads/premio.jpg";
+            $image = "uploads/premio.jpg";
+
+            if (isset($_FILES["vehicle_image"]) && $_FILES["vehicle_image"]["error"] === UPLOAD_ERR_OK) {
+                $uploadDir = __DIR__ . "/../uploads/";
+                if (!is_dir($uploadDir)) {
+                    mkdir($uploadDir, 0777, true);
+                }
+                $fileExt = pathinfo($_FILES["vehicle_image"]["name"], PATHINFO_EXTENSION);
+                $newFilename = time() . "_" . uniqid() . "." . $fileExt;
+                $targetFile = $uploadDir . $newFilename;
+                if (move_uploaded_file($_FILES["vehicle_image"]["tmp_name"], $targetFile)) {
+                    $image = "uploads/" . $newFilename;
+                }
+            }
 
             if (!empty($brand) && !empty($model) && !empty($plate) && $rate > 0) {
                 $this->vehicleModel->create($plate, $brand, $model, $type, $year, $rate, $status, $image);
             }
+            header("Location: index.php?controller=vehicles&action=index");
+            exit;
         }
-        header("Location: index.php?controller=vehicles&action=index");
-        exit;
+
+        require __DIR__ . "/../views/vehicles/add.php";
     }
 
     public function edit() {
+        $id = (int)($_GET["id"] ?? $_POST["id"] ?? 0);
+        $vehicle = $this->vehicleModel->getById($id);
+
+        if (!$vehicle) {
+            header("Location: index.php?controller=vehicles&action=index");
+            exit;
+        }
+
         if ($_SERVER["REQUEST_METHOD"] === "POST") {
-            $id = (int)($_POST["id"] ?? 0);
             $brand = trim($_POST["brand"] ?? "");
             $model = trim($_POST["model"] ?? "");
             $plate = trim($_POST["plate_number"] ?? "");
@@ -54,16 +76,29 @@ class VehicleController {
             $year = (int)($_POST["year"] ?? date("Y"));
             $rate = (float)($_POST["daily_rate"] ?? 0);
             $status = trim($_POST["status"] ?? "available");
-            
-            $existing = $this->vehicleModel->getById($id);
-            $image = !empty($_POST["image_path"]) ? trim($_POST["image_path"]) : ($existing["image_path"] ?? "uploads/premio.jpg");
+            $image = $vehicle["image_path"] ?? "uploads/premio.jpg";
 
-            if ($id > 0 && !empty($brand) && !empty($model) && !empty($plate) && $rate > 0) {
+            if (isset($_FILES["vehicle_image"]) && $_FILES["vehicle_image"]["error"] === UPLOAD_ERR_OK) {
+                $uploadDir = __DIR__ . "/../uploads/";
+                if (!is_dir($uploadDir)) {
+                    mkdir($uploadDir, 0777, true);
+                }
+                $fileExt = pathinfo($_FILES["vehicle_image"]["name"], PATHINFO_EXTENSION);
+                $newFilename = time() . "_" . uniqid() . "." . $fileExt;
+                $targetFile = $uploadDir . $newFilename;
+                if (move_uploaded_file($_FILES["vehicle_image"]["tmp_name"], $targetFile)) {
+                    $image = "uploads/" . $newFilename;
+                }
+            }
+
+            if (!empty($brand) && !empty($model) && !empty($plate) && $rate > 0) {
                 $this->vehicleModel->update($id, $plate, $brand, $model, $type, $year, $rate, $status, $image);
             }
+            header("Location: index.php?controller=vehicles&action=index");
+            exit;
         }
-        header("Location: index.php?controller=vehicles&action=index");
-        exit;
+
+        require __DIR__ . "/../views/vehicles/edit.php";
     }
 
     public function delete() {
