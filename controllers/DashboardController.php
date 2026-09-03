@@ -38,8 +38,25 @@ class DashboardController {
         $userRole = $_SESSION["user_role"] ?? "customer";
         $userId = $_SESSION["user_id"];
 
+        $myActiveBookings = 0;
+        $myPendingRequests = 0;
+        $myCompletedRentals = 0;
+        $myTotalSpent = 0;
+
         if ($userRole === "customer") {
-            $recentRentals = $this->rentalModel->getByCustomer($userId);
+            $customerRentals = $this->rentalModel->getByCustomer($userId);
+            $recentRentals = $customerRentals;
+            foreach ($customerRentals as $cr) {
+                if ($cr["status"] === "rented" || $cr["status"] === "approved") {
+                    $myActiveBookings++;
+                    $myTotalSpent += (float)$cr["total_cost"];
+                } elseif ($cr["status"] === "pending") {
+                    $myPendingRequests++;
+                } elseif ($cr["status"] === "returned") {
+                    $myCompletedRentals++;
+                    $myTotalSpent += (float)$cr["total_cost"];
+                }
+            }
         } else {
             $recentRentals = $this->rentalModel->getAllWithDetails();
         }
