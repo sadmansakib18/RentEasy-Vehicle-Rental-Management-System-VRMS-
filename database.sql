@@ -54,11 +54,11 @@ INSERT INTO `users` (`id`, `name`, `email`, `password`, `phone`, `address`, `rol
 ON DUPLICATE KEY UPDATE `name` = VALUES(`name`);
 
 INSERT INTO `vehicles` (`id`, `plate_number`, `brand`, `model`, `type`, `year`, `daily_rate`, `status`, `image_path`) VALUES
-(1, 'DHAKA-METRO-KA-1122', 'Toyota', 'Premio', 'Sedan', 2018, 3500.00, 'available', 'assets/images/r15.webp'),
-(2, 'DHAKA-METRO-GA-4455', 'Honda', 'Civic', 'Sedan', 2020, 4500.00, 'available', 'assets/images/r15.webp'),
-(3, 'DHAKA-METRO-HA-7788', 'Mitsubishi', 'Outlander', 'SUV', 2019, 6000.00, 'available', 'assets/images/r15.webp'),
-(4, 'DHAKA-METRO-LA-9900', 'Nissan', 'X-Trail', 'SUV', 2017, 5500.00, 'rented', 'assets/images/r15.webp'),
-(5, 'DHAKA-METRO-MA-3344', 'Yamaha', 'R15 V3', 'Motorcycle', 2021, 1500.00, 'available', 'assets/images/r15.webp')
+(1, 'DHAKA-METRO-KA-1122', 'Toyota', 'Premio', 'Sedan', 2018, 3500.00, 'available', 'uploads/premio.jpg'),
+(2, 'DHAKA-METRO-GA-4455', 'Honda', 'Civic', 'Sedan', 2020, 4500.00, 'available', 'uploads/civic.jpg'),
+(3, 'DHAKA-METRO-HA-7788', 'Mitsubishi', 'Outlander', 'SUV', 2019, 6000.00, 'available', 'uploads/outlander.jpg'),
+(4, 'DHAKA-METRO-LA-9900', 'Nissan', 'X-Trail', 'SUV', 2017, 5500.00, 'rented', 'uploads/xtrail.jpg'),
+(5, 'DHAKA-METRO-MA-3344', 'Yamaha', 'R15 V3', 'Motorcycle', 2021, 1500.00, 'available', 'uploads/r15.webp')
 ON DUPLICATE KEY UPDATE `plate_number` = VALUES(`plate_number`);
 
 INSERT INTO `system_settings` (`setting_key`, `setting_value`) VALUES

@@ -42,7 +42,7 @@ class VehicleModel {
         return $res->fetch_assoc();
     }
 
-    public function create($plate_number, $brand, $model, $type, $year, $daily_rate, $status = "available", $image_path = "assets/images/r15.webp") {
+    public function create($plate_number, $brand, $model, $type, $year, $daily_rate, $status = "available", $image_path = "uploads/premio.jpg") {
         $stmt = $this->db->prepare("INSERT INTO vehicles (plate_number, brand, model, type, year, daily_rate, status, image_path) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
         $stmt->bind_param("sssssdss", $plate_number, $brand, $model, $type, $year, $daily_rate, $status, $image_path);
         return $stmt->execute();

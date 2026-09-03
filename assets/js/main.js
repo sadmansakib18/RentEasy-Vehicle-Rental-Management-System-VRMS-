@@ -150,6 +150,7 @@ function openAddVehicleModal() {
     document.getElementById("veh_model").value = "";
     document.getElementById("veh_plate").value = "";
     document.getElementById("veh_rate").value = "";
+    document.getElementById("veh_image").value = "uploads/premio.jpg";
     document.getElementById("veh_submit_btn").innerText = "Save Vehicle";
     openModal("vehicle-modal");
 }
@@ -164,6 +165,7 @@ function openEditVehicleModal(veh) {
     document.getElementById("veh_type").value = veh.type;
     document.getElementById("veh_year").value = veh.year;
     document.getElementById("veh_rate").value = veh.daily_rate;
+    document.getElementById("veh_image").value = veh.image_path || "uploads/premio.jpg";
     document.getElementById("veh_status").value = veh.status;
     document.getElementById("veh_submit_btn").innerText = "Update Vehicle";
     openModal("vehicle-modal");

@@ -34,7 +34,7 @@ class VehicleController {
             $year = (int)($_POST["year"] ?? date("Y"));
             $rate = (float)($_POST["daily_rate"] ?? 0);
             $status = trim($_POST["status"] ?? "available");
-            $image = "assets/images/r15.webp";
+            $image = !empty($_POST["image_path"]) ? trim($_POST["image_path"]) : "uploads/premio.jpg";
 
             if (!empty($brand) && !empty($model) && !empty($plate) && $rate > 0) {
                 $this->vehicleModel->create($plate, $brand, $model, $type, $year, $rate, $status, $image);
@@ -54,7 +54,9 @@ class VehicleController {
             $year = (int)($_POST["year"] ?? date("Y"));
             $rate = (float)($_POST["daily_rate"] ?? 0);
             $status = trim($_POST["status"] ?? "available");
-            $image = "assets/images/r15.webp";
+            
+            $existing = $this->vehicleModel->getById($id);
+            $image = !empty($_POST["image_path"]) ? trim($_POST["image_path"]) : ($existing["image_path"] ?? "uploads/premio.jpg");
 
             if ($id > 0 && !empty($brand) && !empty($model) && !empty($plate) && $rate > 0) {
                 $this->vehicleModel->update($id, $plate, $brand, $model, $type, $year, $rate, $status, $image);

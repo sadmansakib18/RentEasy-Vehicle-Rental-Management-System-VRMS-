@@ -74,6 +74,10 @@ require_once __DIR__ . "/../layouts/sidebar.php";
                 <input type="number" step="0.01" name="daily_rate" id="veh_rate" class="form-control" placeholder="3500" required>
             </div>
             <div class="form-group">
+                <label for="veh_image">Image Path</label>
+                <input type="text" name="image_path" id="veh_image" class="form-control" placeholder="uploads/premio.jpg">
+            </div>
+            <div class="form-group">
                 <label for="veh_status">Status</label>
                 <select name="status" id="veh_status" class="form-control">
                     <option value="available">Available</option>
